@@ -23,6 +23,10 @@ app.use(express.json());
 // })
 app.use("/url",urlRoute);
 
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+  });
+
 
 app.get("/:shortId", async(req, res) => {
     // console.log(req.params);
