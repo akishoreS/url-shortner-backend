@@ -6,6 +6,7 @@ const urlSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     redirectURL: {
         type: String,
         required: true,
