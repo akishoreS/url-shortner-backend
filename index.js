@@ -42,7 +42,9 @@ const User = require("./models/user");
 const app = express();
 const PORT = 8001;
 
-connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log("MongoDB connected"));
+// connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log("MongoDB connected"));
+connectToMongoDB(process.env.MONGODB_URI).then(() => console.log("MongoDB connected"));
+
 
 app.use(express.json());
 app.use("/url", urlRoute);
