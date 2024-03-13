@@ -33,6 +33,7 @@ const URL = require('../models/url');
 const User = require('../models/user');
 
 async function handleGenerateNewShortURL(req, res) {
+    console.log(req.body);
     const { url, googleId, name, imageUrl, email } = req.body;
 
     if (!url) {
@@ -40,9 +41,9 @@ async function handleGenerateNewShortURL(req, res) {
     }
 
     // Verify if user information is provided
-    if (!googleId || !name || !email) {
-        return res.status(400).json({ error: "Missing required user information" });
-    }
+    // if (!googleId || !name || !email) {
+    //     return res.status(400).json({ error: "Missing required user information" });
+    // }
 
     let user;
     try {
