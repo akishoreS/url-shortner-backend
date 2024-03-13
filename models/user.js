@@ -3,21 +3,21 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     googleId: {
         type: String,
-        required: true,
+        required: false,
         unique: true, // Acts as a primary key for user identification
     },
     email: {
         type: String,
-        required: true,
+        required: false,
         unique: true,
     },
     name: { // Updated from 'username' to 'name' as per your requirement
         type: String,
-        required: true,
+        required: false,
     },
     imageUrl: { // New field for storing image URL
         type: String,
-        required: true, // Making it optional based on your requirement
+        required: false, // Making it optional based on your requirement
     },
     urls: [{ // Keeping as is, assuming you want to maintain a list of URLs associated with the user
         type: mongoose.Schema.Types.ObjectId,
