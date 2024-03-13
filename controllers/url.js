@@ -15,14 +15,7 @@
 // }
 
 
-// async function handleGetAnalytics(req,res){
-//     const shortId = req.params.shortId;
-//     const result = await URL.findOne({shortId });
-//     return res.json({
-//         totalClicks:result.visitHistory.length,
-//         analytics: result.visitHistory,
-//     });
-// }
+
 // module.exports={
 //     handleGenerateNewShortURL,
 //     handleGetAnalytics,
@@ -33,7 +26,7 @@ const URL = require('../models/url');
 const User = require('../models/user');
 
 async function handleGenerateNewShortURL(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     const { url, googleId, name, imageUrl, email } = req.body;
 
     if (!url) {
@@ -73,23 +66,31 @@ async function handleGenerateNewShortURL(req, res) {
     }
 }
 
-async function handleGetAnalytics(req, res) {
+// async function handleGetAnalytics(req, res) {
+//     const shortId = req.params.shortId;
+//     try {
+//         const result = await URL.findOne({ shortId }).populate('owner', 'name email imageUrl -_id');
+//         if (!result) {
+//             return res.status(404).json({ error: "URL not found" });
+//         }
+//         return res.json({
+//             url: result.redirectURL,
+//             totalClicks: result.visitHistory.length,
+//             analytics: result.visitHistory,
+//             owner: result.owner ? result.owner : "User data not available",
+//         });
+//     } catch (error) {
+//         console.error("Error fetching analytics:", error);
+//         return res.status(500).json({ error: "Error fetching analytics" });
+//     }
+// }
+async function handleGetAnalytics(req,res){
     const shortId = req.params.shortId;
-    try {
-        const result = await URL.findOne({ shortId }).populate('owner', 'name email imageUrl -_id');
-        if (!result) {
-            return res.status(404).json({ error: "URL not found" });
-        }
-        return res.json({
-            url: result.redirectURL,
-            totalClicks: result.visitHistory.length,
-            analytics: result.visitHistory,
-            owner: result.owner ? result.owner : "User data not available",
-        });
-    } catch (error) {
-        console.error("Error fetching analytics:", error);
-        return res.status(500).json({ error: "Error fetching analytics" });
-    }
+    const result = await URL.findOne({shortId });
+    return res.json({
+        totalClicks:result.visitHistory.length,
+        analytics: result.visitHistory,
+    });
 }
 
 module.exports = {
