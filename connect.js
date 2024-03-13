@@ -3,26 +3,21 @@
 // async function connectToMongoDB(url){
 //     return mongoose.connect(url);
 // }
-// const username = encodeURIComponent("aryasingh7461");
-// const password = encodeURIComponent("xTQirxtaEkmF6DvJ");
-// async function connectToMongoDB() {
-//     // const dbURI = process.env.MONGODB_URI || 'mongodb+srv://${username}:${password}@cluster0.v9k30g7.mongodb.net/'; 
-//     const dbURI = process.env.MONGODB_URI || 'localhost:27017/short-url'; 
 
-//     try {
-//         await mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
-//         console.log("MongoDB connected");
-//     } catch (error) {
-//         console.error("MongoDB connection error:", error);
-//     }
+
+// module.exports={
+//     connectToMongoDB,
 // }
-const mongoose  = require("mongoose");
-mongoose.set("strictQuery", true);
-async function connectToMongoDB(url){
-    return mongoose.connect(url);
+const mongoose = require("mongoose");
+
+async function connectToMongoDB() {
+    const uri = process.env.MONGODB_URI; // Use the environment variable for your Atlas connection string
+    try {
+        await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        console.log("Connected to MongoDB Atlas");
+    } catch (error) {
+        console.error("Error connecting to MongoDB Atlas:", error);
+    }
 }
 
-
-module.exports={
-    connectToMongoDB,
-}
+module.exports = { connectToMongoDB };
