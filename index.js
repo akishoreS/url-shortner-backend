@@ -42,8 +42,8 @@ const User = require("./models/user");
 const app = express();
 const PORT = 8001;
 
-// connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log("MongoDB connected"));
-connectToMongoDB(process.env.MONGODB_URI).then(() => console.log("MongoDB connected"));
+connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log("MongoDB connected"));
+// connectToMongoDB(process.env.MONGODB_URI).then(() => console.log("MongoDB connected"));
 
 
 app.use(express.json());
@@ -76,45 +76,45 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-// app.get("/:shortId", async (req, res) => {
-//     const shortId = req.params.shortId;
-//     const entry = await URL.findOneAndUpdate(
-//         { shortId },
-//         { 
-//             $push: { visitHistory: { 
-//                 timestamp: Date.now(),
-//                 ip: req.ip,
-//                 userAgent: req.get('User-Agent'),
-//                 referringUrl: req.headers.referer
-//             }},
-//             $inc: { clickCount: 1 }
-//         },
-//         { new: true }
-//     );
-//     if (entry) {
-//         res.redirect(entry.redirectURL);
-//     } else {
-//         res.status(404).send('URL not found');
-//     }
-// });
-app.get("/:shortId", async (req, res, next) => {
+app.get("/:shortId", async (req, res) => {
     const shortId = req.params.shortId;
-    const entry = await URL.findOne({ shortId });
-    if (entry) {
-      res.redirect(entry.redirectURL);
-      process.nextTick(async () => {
-        await URL.findOneAndUpdate(
-          { shortId },
-          {
-            $push: { visitHistory: { timestamp: Date.now(), ip: req.ip, userAgent: req.get('User-Agent'), referringUrl: req.headers.referer }},
+    const entry = await URL.findOneAndUpdate(
+        { shortId },
+        { 
+            $push: { visitHistory: { 
+                timestamp: Date.now(),
+                ip: req.ip,
+                userAgent: req.get('User-Agent'),
+                referringUrl: req.headers.referer
+            }},
             $inc: { clickCount: 1 }
-          }
-        );
-      });
+        },
+        { new: true }
+    );
+    if (entry) {
+        res.redirect(entry.redirectURL);
     } else {
-      res.status(404).send('URL not found');
+        res.status(404).send('URL not found');
     }
-  });
+});
+// app.get("/:shortId", async (req, res, next) => {
+//     const shortId = req.params.shortId;
+//     const entry = await URL.findOne({ shortId });
+//     if (entry) {
+//       res.redirect(entry.redirectURL);
+//       process.nextTick(async () => {
+//         await URL.findOneAndUpdate(
+//           { shortId },
+//           {
+//             $push: { visitHistory: { timestamp: Date.now(), ip: req.ip, userAgent: req.get('User-Agent'), referringUrl: req.headers.referer }},
+//             $inc: { clickCount: 1 }
+//           }
+//         );
+//       });
+//     } else {
+//       res.status(404).send('URL not found');
+//     }
+//   });
   
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
