@@ -1,39 +1,5 @@
-// const express = require("express");
-// const { connectToMongoDB } = require("./connect");
-// const urlRoute = require("./routes/url");
-// const URL = require("./models/url");
-
-// const app = express();
-// const PORT = 8001;
-
-// connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log("Mongodb connected"));
-
-// app.use(express.json());
-// app.use("/url", urlRoute);
-
-// app.get('/', (req, res) => {
-//     res.send('Hello World!')
-// });
-
-// app.get("/:shortId", async (req, res) => {
-//     const shortId = req.params.shortId;
-//     const entry = await URL.findOneAndUpdate(
-//         { shortId },
-//         { 
-//             $push: { visitHistory: { 
-//                 timestamp: Date.now(),
-//                 ip: req.ip,
-//                 userAgent: req.get('User-Agent'),
-//                 referringUrl: req.headers.referer
-//             } },
-//             $inc: { clickCount: 1 } // Increment click count
-//         }
-//     );
-//     res.redirect(entry.redirectURL);
-// });
-
-// app.listen(PORT, () => console.log(`Server started at PORT:${PORT}`));
-require('dotenv').config();
+const express = require('express');
+const cookieParser = require('cookie-parser');
 const express = require("express");
 const { connectToMongoDB } = require("./connect");
 const urlRoute = require("./routes/url");
@@ -47,7 +13,7 @@ const PORT = 8001;
 // connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log("MongoDB connected"));
 connectToMongoDB(process.env.MONGODB_URI).then(() => console.log("MongoDB connected"));
 
-
+app.use(cookieParser()); 
 app.use(express.json());
 app.use("/url", urlRoute);
 
@@ -99,26 +65,7 @@ app.get("/:shortId", async (req, res) => {
         res.status(404).send('URL not found');
     }
 });
-// app.get("/:shortId", async (req, res, next) => {
-//     const shortId = req.params.shortId;
-//     const entry = await URL.findOne({ shortId });
-//     if (entry) {
-//       res.redirect(entry.redirectURL);
-//       process.nextTick(async () => {
-//         await URL.findOneAndUpdate(
-//           { shortId },
-//           {
-//             $push: { visitHistory: { timestamp: Date.now(), ip: req.ip, userAgent: req.get('User-Agent'), referringUrl: req.headers.referer }},
-//             $inc: { clickCount: 1 }
-//           }
-//         );
-//       });
-//     } else {
-//       res.status(404).send('URL not found');
-//     }
-//   });
   
-
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 
