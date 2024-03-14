@@ -32,6 +32,7 @@ app.post('/user-data', async (req, res) => {
             { name, email, imageUrl }, 
             { new: true, upsert: true }
         );
+        res.cookie('signedUp', 'true', { maxAge: 24 * 60 * 60 * 1000, httpOnly: true }); // Expires in 1 day
 
         res.status(200).json({ message: "User data processed", user });
     } catch (error) {
