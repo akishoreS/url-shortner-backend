@@ -1,25 +1,3 @@
-// const shortid =require("shortid");
-// const URL= require('../models/url');
-// const User = require('../models/user');
-
-// async function handleGenerateNewShortURL(req,res){
-//     const body= req.body;
-//     if(!body.url)return res.status(400).json({error:"url is required"});
-//     const shortID = shortid();
-//     await URL.create({
-//         shortId: shortID,
-//         redirectURL:body.url,
-//         visitHistory:[],
-//     });
-//     return res.json({id:shortID});
-// }
-
-
-
-// // module.exports={
-// //     handleGenerateNewShortURL,
-// //     handleGetAnalytics,
-// // };
 
 // const shortid = require("shortid");
 // const URL = require('../models/url');
@@ -33,10 +11,10 @@
 //         return res.status(400).json({ error: "URL is required" });
 //     }
 
-//     // Verify if user information is provided
-//     // if (!googleId || !name || !email) {
-//     //     return res.status(400).json({ error: "Missing required user information" });
-//     // }
+    // Verify if user information is provided
+    // if (!googleId || !name || !email) {
+    //     return res.status(400).json({ error: "Missing required user information" });
+    // }
 
 //     let user;
 //     try {
@@ -84,14 +62,6 @@
 //         return res.status(500).json({ error: "Error fetching analytics" });
 //     }
 // }
-// // async function handleGetAnalytics(req,res){
-// //     const shortId = req.params.shortId;
-// //     const result = await URL.findOne({shortId });
-// //     return res.json({
-// //         totalClicks:result.visitHistory.length,
-// //         analytics: result.visitHistory,
-// //     });
-// // }
 
 // module.exports = {
 //     handleGenerateNewShortURL,
@@ -107,6 +77,13 @@ async function handleGenerateNewShortURL(req, res) {
 
     if (!url) {
         return res.status(400).json({ error: "URL is required" });
+    }
+     // Check for an existing long URL
+
+    const existingURL = await URL.findOne({ redirectURL: url });
+    if (existingURL) {
+     // If found, return the existing short URL
+        return res.json({ id: existingURL.shortId, url: existingURL.redirectURL });
     }
 
     let user;
