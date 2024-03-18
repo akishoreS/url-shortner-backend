@@ -24,7 +24,10 @@ app.post('/user-data', async (req, res) => {
     if (!id || !name || !email) { // imageUrl is optional
         return res.status(400).send('Missing required user information.');
     }
-
+    if (id === null) {
+        // Handle null googleId scenario, perhaps by sending a specific error message
+        return res.status(400).send('Invalid Google ID.');
+      }
     try {
         // Check if the user exists, update if yes, create if no
         let user = await User.findOneAndUpdate(
@@ -45,6 +48,18 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+// Endpoint to fetch all users and their URLs for testing
+app.get('/test/users', async (req, res) => {
+    try {
+      const users = await User.find().populate('urls').exec();
+      res.json(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      res.status(500).send('Error fetching users');
+    }
+  });
+
+  
 app.get("/:shortId", async (req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate(
