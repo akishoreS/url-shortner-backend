@@ -52,6 +52,7 @@ app.get('/', (req, res) => {
 app.get('/test/users', async (req, res) => {
     try {
       const users = await User.find().populate('urls').exec();
+      console.log("Users fetched:", users);
       res.json(users);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -59,7 +60,6 @@ app.get('/test/users', async (req, res) => {
     }
   });
 
-  
 app.get("/:shortId", async (req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate(
