@@ -1,4 +1,6 @@
 // const express = require('express');
+require('dotenv').config();
+
 const cookieParser = require('cookie-parser');
 const express = require("express");
 const { connectToMongoDB } = require("./connect");
@@ -60,6 +62,7 @@ app.get('/test/users', async (req, res) => {
     }
   });
 
+
 app.get("/:shortId", async (req, res) => {
     const shortId = req.params.shortId;
     const entry = await URL.findOneAndUpdate(
@@ -81,6 +84,33 @@ app.get("/:shortId", async (req, res) => {
         res.status(404).send('URL not found');
     }
 });
+// app.get('/:shortId', async (req, res) => {
+//     const shortId = req.params.shortId;
+//     const userAgent = req.headers['user-agent']; // Capture the user agent
+//     const ip = req.ip; // Capture the IP address
+
+//     try {
+//         const url = await URL.findOne({ shortId: shortId });
+//         if (!url) {
+//             return res.status(404).send('URL not found');
+//         }
+
+//         // Push a new visit record into the visitHistory array
+//         url.visitHistory.push({
+//             timestamp: Date.now(),
+//             ip: ip,
+//             userAgent: userAgent, // Store the user agent
+//         });
+//         url.clickCount += 1; // Increment click count if you're tracking this
+//         await url.save();
+
+//         res.redirect(url.redirectURL);
+//     } catch (error) {
+//         console.error('Error accessing URL:', error);
+//         res.status(500).send('Error accessing URL');
+//     }
+// });
+
   
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
